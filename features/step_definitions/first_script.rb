@@ -10,7 +10,6 @@ describe 'Puppy adoption' do
   browser = Selenium::WebDriver.for :chrome
   browser.navigate.to 'http://puppies.herokuapp.com'
   wait = Selenium::WebDriver::Wait.new(timeout: 10)
-  sleep 5
 
   wait.until { browser.page_source.include?('Home of the Happy Puppy') }
   view1 = wait.until { browser.find_element(:class, 'rounded_button') }
@@ -20,6 +19,7 @@ describe 'Puppy adoption' do
   adopt_me.click
   complete = wait.until { browser.find_element(:class, 'rounded_button') }
   complete.click
+
   name = wait.until { browser.find_element(:id, 'order_name') }
   name.send_keys(Faker::FunnyName.two_word_name)
   browser.find_element(:id, 'order_address').send_keys(Faker::Address.full_address)
@@ -31,5 +31,7 @@ describe 'Puppy adoption' do
   submit_button = browser.find_element(:name, 'commit')
   submit_button.click
   raise('This test has failed!') unless browser.page_source.include? 'Thank you for adopting a puppy!'
+
+  browser.quit
 end
 
